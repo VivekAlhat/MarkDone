@@ -25,7 +25,7 @@ const Task = ({ task }: TaskProps) => {
         </Text>
         {isUrgent && (
           <Text fontSize={"sm"} bg={"red.200"} px={2} borderRadius={"md"}>
-            Urgent
+            urgent
           </Text>
         )}
       </HStack>

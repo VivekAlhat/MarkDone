@@ -4,7 +4,7 @@ const dummyTasks: ITask[] = [
   {
     id: 1,
     name: "Do something",
-    label: "Personal",
+    label: "personal",
     isUrgent: false,
     due: new Date(),
     isCompleted: false,
@@ -12,7 +12,7 @@ const dummyTasks: ITask[] = [
   {
     id: 2,
     name: "Do anything",
-    label: "Personal",
+    label: "personal",
     isUrgent: false,
     due: new Date(),
     isCompleted: false,
@@ -20,7 +20,7 @@ const dummyTasks: ITask[] = [
   {
     id: 3,
     name: "Do this",
-    label: "Work",
+    label: "work",
     isUrgent: true,
     due: new Date(),
     isCompleted: true,

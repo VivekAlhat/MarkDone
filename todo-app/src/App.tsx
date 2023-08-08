@@ -1,4 +1,11 @@
-import { VStack, Flex, Divider, HStack, Checkbox } from "@chakra-ui/react";
+import {
+  VStack,
+  Flex,
+  Divider,
+  HStack,
+  Checkbox,
+  Container,
+} from "@chakra-ui/react";
 import { useState } from "react";
 
 import { dummyTasks } from "./constants/tasks";
@@ -35,8 +42,8 @@ function App() {
   };
 
   return (
-    <Flex bg={"gray.50"} p={5} minHeight={"100vh"} justifyContent={"center"}>
-      <VStack spacing={5} align={"flex-start"} minW={"xl"} maxW={"2xl"}>
+    <Container maxW={"container.md"} minH={"100vh"} p={5}>
+      <VStack spacing={5} align={"flex-start"}>
         <Head pending={pending} />
         <Divider />
         <Flex flexDir={"column"} gap={3} mt={5} w={"full"}>
@@ -48,6 +55,8 @@ function App() {
               p={5}
               rounded={"lg"}
               spacing={5}
+              border={"1px solid"}
+              borderColor={"gray.300"}
             >
               <Checkbox
                 isChecked={task.isCompleted}
@@ -61,7 +70,7 @@ function App() {
           <AddTodo />
         </Flex>
       </VStack>
-    </Flex>
+    </Container>
   );
 }
 

@@ -33,6 +33,9 @@ const AddTodo = () => {
         justifyContent={"center"}
         cursor={"pointer"}
         onClick={onOpen}
+        rounded={"lg"}
+        border={"1px solid"}
+        borderColor={"gray.200"}
       >
         <AddIcon mx={2} boxSize={3} />
         <Text fontSize={"md"}>Add Task</Text>
@@ -48,7 +51,7 @@ const AddTodo = () => {
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
         />
-        <ModalContent>
+        <ModalContent mx={2}>
           <ModalHeader>Create new task</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>

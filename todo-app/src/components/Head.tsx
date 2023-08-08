@@ -11,7 +11,7 @@ const Head = ({ pending }: HeadProps) => {
         Your to-do list
       </Heading>
       <Text color={"gray.700"} mt={2}>
-        {pending} pending {pending > 1 ? "tasks" : "task"}
+        {pending} pending {pending > 1 || pending === 0 ? "tasks" : "task"}
       </Text>
     </Box>
   );
