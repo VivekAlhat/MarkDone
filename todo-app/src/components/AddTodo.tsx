@@ -38,7 +38,7 @@ const AddTodo = () => {
         borderColor={"gray.200"}
       >
         <AddIcon mx={2} boxSize={3} />
-        <Text fontSize={"md"}>Add Task</Text>
+        <Text fontSize={"md"}>New Task</Text>
       </Flex>
 
       <Modal

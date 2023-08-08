@@ -1,5 +1,5 @@
 import { Box, Heading, Text, HStack } from "@chakra-ui/react";
-import { ITask } from "../App";
+import { ITask } from "../pages/Dashboard";
 import { format } from "date-fns";
 
 type TaskProps = {
