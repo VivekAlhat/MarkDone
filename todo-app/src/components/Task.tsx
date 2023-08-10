@@ -1,36 +1,72 @@
-import { Box, Heading, Text, HStack } from "@chakra-ui/react";
+import {
+  Box,
+  Heading,
+  Text,
+  HStack,
+  Checkbox,
+  Flex,
+  IconButton,
+  Spacer,
+} from "@chakra-ui/react";
 import { ITask } from "../pages/Dashboard";
 import { format } from "date-fns";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 type TaskProps = {
-  task: ITask;
+  currentTask: ITask;
+  allTasks: ITask[];
+  setTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
 };
 
-const Task = ({ task }: TaskProps) => {
-  const { name, label, isCompleted, isUrgent, due } = task;
-  const formattedDate = format(due, "PP");
+const Task = ({ currentTask, allTasks, setTasks }: TaskProps) => {
+  const { id, name, label, completed, urgent, due } = currentTask;
+  const formattedDate = format(new Date(due), "PP");
+
+  const handleTaskChange = (id: number) => {
+    const updatedTasks = allTasks.map((task: ITask) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          completed: !task.completed,
+        };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+  };
 
   return (
-    <Box>
-      <HStack spacing={"4"} mb={2}>
-        <Heading
-          as={"h3"}
-          size={"md"}
-          textDecor={isCompleted ? "line-through" : "none"}
-        >
-          {name}
-        </Heading>
-        <Text fontSize={"sm"} bg={"orange.200"} px={2} borderRadius={"md"}>
-          {label}
-        </Text>
-        {isUrgent && (
-          <Text fontSize={"sm"} bg={"red.200"} px={2} borderRadius={"md"}>
-            urgent
+    <Flex gap={5} alignItems={"center"} w={"full"}>
+      <Checkbox
+        isChecked={completed}
+        size={"lg"}
+        rounded={"full"}
+        onChange={() => handleTaskChange(id)}
+      />
+      <Box>
+        <HStack spacing={"4"} mb={2}>
+          <Heading
+            as={"h3"}
+            size={"md"}
+            textDecor={completed ? "line-through" : "none"}
+          >
+            {name}
+          </Heading>
+          <Text fontSize={"sm"} bg={"orange.200"} px={2} borderRadius={"md"}>
+            {label}
           </Text>
-        )}
-      </HStack>
-      <Text color={"gray.500"}>Due {formattedDate}</Text>
-    </Box>
+          {urgent && (
+            <Text fontSize={"sm"} bg={"red.200"} px={2} borderRadius={"md"}>
+              urgent
+            </Text>
+          )}
+        </HStack>
+        <Text color={"gray.500"}>Due {formattedDate}</Text>
+      </Box>
+      <Spacer />
+      <IconButton icon={<DeleteIcon />} aria-label={"Delete Task"} />
+    </Flex>
   );
 };
 

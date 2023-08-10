@@ -1,12 +1,4 @@
-import {
-  VStack,
-  Flex,
-  HStack,
-  Checkbox,
-  Spinner,
-  Box,
-  Text,
-} from "@chakra-ui/react";
+import { VStack, Flex, HStack, Spinner, Box, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { dummyTasks } from "../constants/tasks";
 import Task from "../components/Task";
@@ -18,30 +10,16 @@ export interface ITask {
   id: number;
   name: string;
   label: string;
-  isUrgent: boolean;
+  urgent: boolean;
   due: Date;
-  isCompleted: boolean;
+  completed: boolean;
 }
 
 const Dashboard = () => {
   const { isUserLoading } = useUser();
   const [tasks, setTasks] = useState<ITask[]>(dummyTasks);
 
-  const pending = tasks.filter((task) => !task.isCompleted).length;
-
-  const handleTaskChange = (id: number) => {
-    const updatedTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return {
-          ...task,
-          isCompleted: !task.isCompleted,
-        };
-      }
-      return task;
-    });
-
-    setTasks(updatedTasks);
-  };
+  const pending = tasks.filter((task) => !task.completed).length;
 
   return (
     <Box>
@@ -65,13 +43,12 @@ const Dashboard = () => {
                 border={"1px solid"}
                 borderColor={"gray.300"}
               >
-                <Checkbox
-                  isChecked={task.isCompleted}
-                  size={"lg"}
-                  rounded={"full"}
-                  onChange={() => handleTaskChange(task.id)}
+                <Task
+                  key={task.id}
+                  currentTask={task}
+                  allTasks={tasks}
+                  setTasks={setTasks}
                 />
-                <Task key={task.id} task={task} />
               </HStack>
             ))}
             <AddTodo />

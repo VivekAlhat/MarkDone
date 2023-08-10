@@ -15,7 +15,7 @@ const Auth = () => {
     if (error) {
       toast({
         title: "Error",
-        description: "Some error occured during sign in.",
+        description: "Some error occured during sign in",
         status: "error",
         duration: 3000,
         isClosable: true,

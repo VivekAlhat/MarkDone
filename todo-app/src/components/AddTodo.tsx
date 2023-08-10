@@ -36,6 +36,7 @@ const AddTodo = () => {
         rounded={"lg"}
         border={"1px solid"}
         borderColor={"gray.200"}
+        _hover={{ backgroundColor: "gray.300" }}
       >
         <AddIcon mx={2} boxSize={3} />
         <Text fontSize={"md"}>New Task</Text>
