@@ -1,10 +1,18 @@
-import { VStack, Flex, HStack, Spinner, Box, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { dummyTasks } from "../constants/tasks";
+import {
+  VStack,
+  Flex,
+  HStack,
+  Spinner,
+  Box,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import Task from "../components/Task";
 import Head from "../components/Head";
 import AddTodo from "../components/AddTodo";
 import useUser from "../hooks/useUser";
+import supabase from "../db/supabase";
 
 export interface ITask {
   id: number;
@@ -16,10 +24,29 @@ export interface ITask {
 }
 
 const Dashboard = () => {
+  const toast = useToast();
   const { isUserLoading } = useUser();
-  const [tasks, setTasks] = useState<ITask[]>(dummyTasks);
+  const [tasks, setTasks] = useState<ITask[]>([]);
 
   const pending = tasks.filter((task) => !task.completed).length;
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const { data, error } = await supabase.from("tasks").select();
+      if (error) {
+        toast({
+          title: "Error",
+          description: "Some error occured while getting your tasks",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+        return;
+      }
+      setTasks(data as ITask[]);
+    };
+    fetchTasks();
+  }, [toast]);
 
   return (
     <Box>
@@ -46,12 +73,12 @@ const Dashboard = () => {
                 <Task
                   key={task.id}
                   currentTask={task}
-                  allTasks={tasks}
                   setTasks={setTasks}
+                  tasks={tasks}
                 />
               </HStack>
             ))}
-            <AddTodo />
+            <AddTodo setTasks={setTasks} />
           </Flex>
         </VStack>
       )}

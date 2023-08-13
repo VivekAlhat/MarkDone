@@ -7,33 +7,58 @@ import {
   Flex,
   IconButton,
   Spacer,
+  useToast,
 } from "@chakra-ui/react";
 import { ITask } from "../pages/Dashboard";
 import { format } from "date-fns";
 import { DeleteIcon } from "@chakra-ui/icons";
+import supabase from "../db/supabase";
 
 type TaskProps = {
   currentTask: ITask;
-  allTasks: ITask[];
+  tasks: ITask[];
   setTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
 };
 
-const Task = ({ currentTask, allTasks, setTasks }: TaskProps) => {
+const Task = ({ currentTask, setTasks, tasks }: TaskProps) => {
+  const toast = useToast();
   const { id, name, label, completed, urgent, due } = currentTask;
   const formattedDate = format(new Date(due), "PP");
 
-  const handleTaskChange = (id: number) => {
-    const updatedTasks = allTasks.map((task: ITask) => {
+  const handleTaskChange = async (id: number) => {
+    const updatedTasks = tasks.map((task) => {
       if (task.id === id) {
         return {
           ...task,
-          completed: !task.completed,
+          completed: !completed,
         };
       }
       return task;
     });
 
     setTasks(updatedTasks);
+
+    const { error } = await supabase
+      .from("tasks")
+      .update({ completed: !completed })
+      .eq("id", id);
+
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Some error occured while updating your task",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleDeleteTask = async (id: number) => {
+    const filteredTasks = tasks.filter((task) => task.id !== id);
+    setTasks(filteredTasks);
+
+    await supabase.from("tasks").delete().eq("id", id);
   };
 
   return (
@@ -65,7 +90,11 @@ const Task = ({ currentTask, allTasks, setTasks }: TaskProps) => {
         <Text color={"gray.500"}>Due {formattedDate}</Text>
       </Box>
       <Spacer />
-      <IconButton icon={<DeleteIcon />} aria-label={"Delete Task"} />
+      <IconButton
+        icon={<DeleteIcon />}
+        aria-label={"Delete Task"}
+        onClick={() => handleDeleteTask(id)}
+      />
     </Flex>
   );
 };
