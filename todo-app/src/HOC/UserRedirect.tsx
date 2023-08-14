@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import useUser from "../hooks/useUser";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 type UserRedirectProps = {
   children: React.ReactNode;
@@ -15,7 +15,8 @@ const UserRedirect = ({ children }: UserRedirectProps) => {
       navigate("/dashboard");
     }
   }, [navigate, user]);
-  return children;
+
+  return <>{children}</>;
 };
 
 export default UserRedirect;
